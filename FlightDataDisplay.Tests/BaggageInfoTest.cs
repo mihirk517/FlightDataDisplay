@@ -13,7 +13,7 @@ public class BaggageInfoTest
         int expectedCarousel = 0;
         var actual = new BaggageInfo()
         {
-            flight = "841",
+            flight = "LH 841",
             from = expectedfrom,
             carousel = expectedCarousel
         };

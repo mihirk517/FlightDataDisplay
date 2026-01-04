@@ -11,7 +11,7 @@ namespace FlightDataDisplay.Application
     {
         private readonly IFlightDataRepository _repo;
         private System.Timers.Timer timer;
-        private System.Timers.Timer deleteTimer;
+        //private System.Timers.Timer deleteTimer;
         private HashSet<IObserver<BaggageInfo>> _observers = new HashSet<IObserver<BaggageInfo>>();
         private HashSet<BaggageInfo> _flights = new HashSet<BaggageInfo>();
         public BaggageHandler(IFlightDataRepository repo)
@@ -20,9 +20,9 @@ namespace FlightDataDisplay.Application
             timer = new System.Timers.Timer(TimeSpan.FromSeconds(20).TotalMilliseconds);
             timer.Enabled = true;
 
-            deleteTimer = new System.Timers.Timer(TimeSpan.FromSeconds(4).TotalMilliseconds);
+           /* deleteTimer = new System.Timers.Timer(TimeSpan.FromSeconds(4).TotalMilliseconds);
             deleteTimer.Enabled = true;
-            deleteTimer.Elapsed += RemoveData;
+            deleteTimer.Elapsed += RemoveData;*/
             //timer.Interval = 100 /*Convert.ToDouble(TimeSpan.FromSeconds(2).TotalMilliseconds)*/;
             timer.Elapsed += BaggageStatus;
         }
@@ -91,12 +91,12 @@ namespace FlightDataDisplay.Application
             }
         }
 
-        async void RemoveData(object sender, ElapsedEventArgs e)
+        /*async void RemoveData(object sender, ElapsedEventArgs e)
         {
             Random random = new Random();
             if (_flights.Count > 0)
             {
-                BaggageInfo flight = _flights.ElementAt(_flights.Count-1/*random.Next(0, _flights.Count)*/);
+                BaggageInfo flight = _flights.ElementAt(_flights.Count-1/*random.Next(0, _flights.Count));
 
                 Console.WriteLine($"Removing {flight.flight} from {flight.from}");
                 await BaggageStatus(flight.flight);
@@ -104,7 +104,7 @@ namespace FlightDataDisplay.Application
 
 
 
-        }
+        }*/
 
         public void LastBaggageClaimed()
         {

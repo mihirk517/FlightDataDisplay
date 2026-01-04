@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AirlineCollection" Version="1.2.0" />
     <PackageReference Include="Faker.Net" Version="2.0.163" />
+    <PackageReference Include="Ibistic.Public.OpenAirportData" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
     <PackageReference Include="OpenSky" Version="1.1.0" />
