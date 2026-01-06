@@ -11,6 +11,7 @@ using System.Timers;
 using FlightDataDisplay.Domain;
 using Newtonsoft.Json;
 using System.Collections.Frozen;
+using OpenSky;
 namespace FlightDataDisplay.Infrastructure
 {
     class OpenskyFlightData : IFlightDataRepository ,IDisposable
@@ -103,6 +104,7 @@ namespace FlightDataDisplay.Infrastructure
                 {
                     _flights = flights;
                 }
+                _flights.Sort((x,y)=>y.lastSeen.CompareTo(x.lastSeen));
             }
             catch (HttpRequestException ex)
             {
@@ -115,8 +117,8 @@ namespace FlightDataDisplay.Infrastructure
         }
         private static string BuildApiUrl(string airportIcao)
         {
-            var begin = DateTimeOffset.UtcNow.AddDays(-1).ToUnixTimeSeconds();
-            var end = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var begin = DateTimeOffset.Now.AddDays(-1).ToUnixTimeSeconds();
+            var end = DateTimeOffset.Now.ToUnixTimeSeconds();
             return $"{OpenSkyApiBaseUrl}/flights/arrival?airport={airportIcao}&begin={begin}&end={end}";
         }
 
@@ -143,16 +145,16 @@ namespace FlightDataDisplay.Infrastructure
             {
                 return null;
             }
-
+            
             var flight = _flights.First();
             var originAirport = _airportResolver.GetByIcao(flight.EstDepartureAirport);
-
             _flights.RemoveAt(0);
 
             var baggageInfo = new BaggageInfo
             {
                 flight = flight.CallSign ?? "Unknown",
                 from = originAirport?.City ?? flight.EstDepartureAirport ?? "Unknown",
+                arrival = DateTimeOffset.FromUnixTimeSeconds(flight.lastSeen).DateTime ,
                 carousel = Random.Shared.Next(MinCarousel, MaxCarousel + 1)
             };
 

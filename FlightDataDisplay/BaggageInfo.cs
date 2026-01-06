@@ -8,6 +8,7 @@ namespace FlightDataDisplay.Domain
     {
         public string flight;
         public string from;
+        public DateTime arrival;
         public int carousel;
     }
 

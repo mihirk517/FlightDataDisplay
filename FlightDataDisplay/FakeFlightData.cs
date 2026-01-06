@@ -26,6 +26,7 @@ namespace FlightDataDisplay.Application
             {
                 flight = Faker.Name.First().ToUpper().Substring(0,2).ToString()+ " " + Faker.RandomNumber.Next(500, 5000).ToString(),
                 from = Faker.Address.City(),
+                arrival = DateTime.UtcNow,
                 carousel = Faker.RandomNumber.Next(0, 5)
             };
         }
