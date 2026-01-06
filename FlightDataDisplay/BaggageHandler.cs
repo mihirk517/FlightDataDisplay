@@ -2,27 +2,27 @@
 using System.Timers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GenericsBasics.Domain;
+using FlightDataDisplay.Domain;
 using System.Linq;
 
-namespace GenericsBasics.Application
+namespace FlightDataDisplay.Application
 {
     public class BaggageHandler : IObservable<BaggageInfo>
     {
         private readonly IFlightDataRepository _repo;
         private System.Timers.Timer timer;
-        private System.Timers.Timer deleteTimer;
+        //private System.Timers.Timer deleteTimer;
         private HashSet<IObserver<BaggageInfo>> _observers = new HashSet<IObserver<BaggageInfo>>();
         private HashSet<BaggageInfo> _flights = new HashSet<BaggageInfo>();
         public BaggageHandler(IFlightDataRepository repo)
         {
             _repo = repo;
-            timer = new System.Timers.Timer(TimeSpan.FromSeconds(2).TotalMilliseconds);
+            timer = new System.Timers.Timer(TimeSpan.FromSeconds(20).TotalMilliseconds);
             timer.Enabled = true;
 
-            deleteTimer = new System.Timers.Timer(TimeSpan.FromSeconds(4).TotalMilliseconds);
+           /* deleteTimer = new System.Timers.Timer(TimeSpan.FromSeconds(4).TotalMilliseconds);
             deleteTimer.Enabled = true;
-            deleteTimer.Elapsed += RemoveData;
+            deleteTimer.Elapsed += RemoveData;*/
             //timer.Interval = 100 /*Convert.ToDouble(TimeSpan.FromSeconds(2).TotalMilliseconds)*/;
             timer.Elapsed += BaggageStatus;
         }
@@ -39,9 +39,9 @@ namespace GenericsBasics.Application
         }
 
         // Called to indicate all baggage is now unloaded.
-        public async Task BaggageStatus(int flightNumber) => await BaggageStatus(flightNumber, string.Empty, 0);
+        public async Task BaggageStatus(string flightNumber) => await BaggageStatus(flightNumber, string.Empty, 0);
 
-        public async Task BaggageStatus(int flightNumber, string from, int carousel)
+        public async Task BaggageStatus(string flightNumber, string from, int carousel)
         {
             var info = new BaggageInfo()
             {
@@ -91,12 +91,12 @@ namespace GenericsBasics.Application
             }
         }
 
-        async void RemoveData(object sender, ElapsedEventArgs e)
+        /*async void RemoveData(object sender, ElapsedEventArgs e)
         {
             Random random = new Random();
             if (_flights.Count > 0)
             {
-                BaggageInfo flight = _flights.ElementAt(_flights.Count-1/*random.Next(0, _flights.Count)*/);
+                BaggageInfo flight = _flights.ElementAt(_flights.Count-1/*random.Next(0, _flights.Count));
 
                 Console.WriteLine($"Removing {flight.flight} from {flight.from}");
                 await BaggageStatus(flight.flight);
@@ -104,7 +104,7 @@ namespace GenericsBasics.Application
 
 
 
-        }
+        }*/
 
         public void LastBaggageClaimed()
         {

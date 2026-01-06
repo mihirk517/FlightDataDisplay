@@ -1,19 +1,19 @@
-using GenericsBasics.Domain;
+using FlightDataDisplay.Domain;
 using Microsoft.Extensions.Options;
 using Xunit.Sdk;
-namespace GenericsBasics.Tests;
+namespace FlightDataDisplay.Tests;
 
 public class BaggageInfoTest
 {
     [Fact]
     public void Test1()
     {
-        int expectedflight = 841;
+        string expectedflight = "LH 841";
         string expectedfrom = "Pandora";
         int expectedCarousel = 0;
         var actual = new BaggageInfo()
         {
-            flight = 841,
+            flight = "LH 841",
             from = expectedfrom,
             carousel = expectedCarousel
         };

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using GenericsBasics.Domain;
-using GenericsBasics.Application;
+using FlightDataDisplay.Domain;
+using FlightDataDisplay.Application;
 
-namespace GenericsBasics.Presentation
+namespace FlightDataDisplay.Presentation
 {
     public class ArrivalsMonitor : IObserver<BaggageInfo>
     {
         private readonly string _name;
         private readonly List<string> _flights = new List<string>();
-        private readonly string _format = "{0,-20} {1,5}  {2, 3}";
+        private readonly string _format = "{0,-20} {1,5}  {2,10} {3,3}";
         private IDisposable? _cancellation;
 
         public ArrivalsMonitor(string name)
@@ -41,7 +41,7 @@ namespace GenericsBasics.Presentation
 
             if (info.carousel is 0)
             {
-                string flightNumber = string.Format("{0,5}", info.flight);
+                string flightNumber = string.Format("{0,6}", info.flight);
                 for (int index = _flights.Count - 1; index >= 0; index--)
                 {
                     string flightInfo = _flights[index];
@@ -56,7 +56,7 @@ namespace GenericsBasics.Presentation
             else
             {
                 // Add flight if it doesn't exist in the collection.
-                string flightInfo = string.Format(_format, info.from, info.flight, info.carousel);
+                string flightInfo = string.Format(_format, info.from, info.flight, info.arrival.ToShortDateString()+"  " + info.arrival.AddHours(1).ToShortTimeString(),info.carousel);
                 if (_flights.Contains(flightInfo) is false)
                 {
                     _flights.Add(flightInfo);

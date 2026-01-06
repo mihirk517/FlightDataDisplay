@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GenericsBasics.Domain
+namespace FlightDataDisplay.Domain
 {
     public struct BaggageInfo
     {
-        public int flight;
+        public string flight;
         public string from;
+        public DateTime arrival;
         public int carousel;
     }
 
