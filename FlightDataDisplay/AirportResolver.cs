@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace FlightDataDisplay.Infrastructure
 {
-    class AirportResolver : IAirportResolver
+    public class AirportResolver : IAirportResolver
     {
         private readonly Dictionary<string, Airport> _icaoLookup = new Dictionary<string, Airport>();
         public AirportResolver()
