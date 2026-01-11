@@ -37,7 +37,7 @@ namespace FlightDataDisplay.Presentation
             .ConfigureServices((context, services) =>
             {
                 IConfiguration configuration = context.Configuration;
-                Console.WriteLine("secrets" + configuration["OpenSky:ClientId"] + configuration["OpenSky:ClientSecret"]);
+                //Console.WriteLine("secrets" + configuration["OpenSky:ClientId"] + configuration["OpenSky:ClientSecret"]);
                 services.AddSingleton<BaggageHandler>();
                 services.AddSingleton<ArrivalsMonitor>(name => new ArrivalsMonitor("Security Exit"));
                 services.AddSingleton<IAirportResolver, AirportResolver>();
@@ -55,7 +55,7 @@ namespace FlightDataDisplay.Presentation
                     var clientSecret = configuration["OpenSky:ClientSecret"];
                     var airportIcao = configuration["OpenSky:AirportIcao"] ?? "EDDF";
 
-                    Console.WriteLine(clientId, clientSecret);
+                    //Console.WriteLine(clientId, clientSecret);
 
                     return new OpenskyFlightData(httpClientFactory, airportResolver, clientId, clientSecret, airportIcao);
                 })

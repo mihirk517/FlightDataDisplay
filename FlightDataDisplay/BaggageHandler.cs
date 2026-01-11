@@ -13,7 +13,7 @@ namespace FlightDataDisplay.Application
         private System.Timers.Timer timer;
         //private System.Timers.Timer deleteTimer;
         private HashSet<IObserver<BaggageInfo>> _observers = new HashSet<IObserver<BaggageInfo>>();
-        private HashSet<BaggageInfo> _flights = new HashSet<BaggageInfo>();
+        private List<BaggageInfo> _flights = new List<BaggageInfo>();        
         public BaggageHandler(IFlightDataRepository repo)
         {
             _repo = repo;
@@ -60,7 +60,7 @@ namespace FlightDataDisplay.Application
             else if (carousel == 0)
             {
 
-                _flights.RemoveWhere(x => x.flight == flightNumber);
+                _flights.RemoveAll(x => x.flight == flightNumber);
                 foreach (IObserver<BaggageInfo> observer in _observers)
                 {
                     observer.OnNext(info);
@@ -87,7 +87,7 @@ namespace FlightDataDisplay.Application
             else if (info.carousel == 0)
             {
 
-                _flights.RemoveWhere(x => x.flight == info.flight);
+                _flights.RemoveAll(x => x.flight == info.flight);
                 foreach (IObserver<BaggageInfo> observer in _observers)
                 {
                     observer.OnNext(info);
