@@ -1,0 +1,37 @@
+@page "/arrivals"
+@using FlightDataDisplay.Infrastructure
+@inject OpenskyFlightData FlightData
+@implements IDisposable
+
+<h1>Flight Arrivals</h1>
+
+<ul>
+    @foreach (var flight in flights)
+    {
+        <li>
+            <strong>@flight.CallSign</strong> 
+            from @flight.EstDepartureAirport 
+            - @DateTimeOffset.FromUnixTimeSeconds(flight.lastSeen).DateTime.AddHours(1).ToShortTimeString()
+        </li>
+    }
+</ul>
+
+@code {
+    private List<FlightArrival> flights = new();
+
+    protected override void OnInitialized()
+    {
+        FlightData.OnFlightAdded += OnNewFlight;
+    }
+
+    private void OnNewFlight(FlightArrival flight)
+    {
+        flights.Add(flight);
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        FlightData.OnFlightAdded -= OnNewFlight;
+    }
+}

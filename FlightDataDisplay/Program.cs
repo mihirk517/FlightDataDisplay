@@ -18,12 +18,12 @@ namespace FlightDataDisplay.Presentation
         static async Task Main(string[] args)
         {
             var host = Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((context,config) =>
+            .ConfigureAppConfiguration((context, config) =>
             {
                 config.SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json",optional:true,reloadOnChange:true)
-                .AddJsonFile($"appsettings{context.HostingEnvironment.EnvironmentName}.json",optional:true);
-                if(context.HostingEnvironment.IsDevelopment())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings{context.HostingEnvironment.EnvironmentName}.json", optional: true);
+                if (context.HostingEnvironment.IsDevelopment())
                 {
                     config.AddUserSecrets<Program>();
                 }
@@ -33,7 +33,7 @@ namespace FlightDataDisplay.Presentation
                 config.AddCommandLine(args);
             })
 
-     
+
             .ConfigureServices((context, services) =>
             {
                 IConfiguration configuration = context.Configuration;

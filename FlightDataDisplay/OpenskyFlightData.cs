@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 using System.Collections.Concurrent;
 namespace FlightDataDisplay.Infrastructure
 {
-    class OpenskyFlightData : IFlightDataRepository, IDisposable
+    public class OpenskyFlightData : IFlightDataRepository, IDisposable
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IAirportResolver _airportResolver;
@@ -29,8 +29,8 @@ namespace FlightDataDisplay.Infrastructure
         List<BaggageInfo> _flightsRecieved = new List<BaggageInfo>();
         private string _accessToken;
         private bool _disposed;
-        //public event Action<FlightArrival> OnFlightAdded;
-        //public event Action<FlightArrival> OnFlightUpdated;
+        public event Action<FlightArrival> OnFlightAdded;
+        public event Action<FlightArrival> OnFlightUpdated;
         public OpenskyFlightData(IHttpClientFactory httpClientFactory, IAirportResolver airportResolver, string clientId,
             string clientSecret,
             string airportIcao = "EDDF")
@@ -148,9 +148,10 @@ namespace FlightDataDisplay.Infrastructure
         {
             if (_flights == null || _flights.IsEmpty)
             {
-                Console.WriteLine("No New/Updated Flight Data");
+                //Console.WriteLine("No New/Updated Flight Data");
                 return Task.FromResult<BaggageInfo>(null);
             }
+            _flights.Values.OrderByDescending(x=>x.lastSeen);
             var flight = _flights.Values.LastOrDefault();
 
             var key = GetFlightKey(flight);
@@ -186,7 +187,7 @@ namespace FlightDataDisplay.Infrastructure
                         _flights[key] = newFlight;  // Update
                         updatedCount++;
 
-                        //OnFlightUpdated?.Invoke(newFlight);
+                        OnFlightUpdated?.Invoke(newFlight);
 
                         Console.WriteLine($"Updated: {newFlight.CallSign} : " +
                                         $"LastSeen: {existingFlight.lastSeen} → {newFlight.lastSeen}");
@@ -201,7 +202,7 @@ namespace FlightDataDisplay.Infrastructure
                     // New flight
                     _flights[key] = newFlight;
                     addedCount++;
-                    //OnFlightAdded?.Invoke(newFlight);
+                    OnFlightAdded?.Invoke(newFlight);
 
                     Console.WriteLine($"New: {newFlight.CallSign} from {newFlight.EstDepartureAirport}");
                 }
